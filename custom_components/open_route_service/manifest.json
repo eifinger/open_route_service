@@ -3,7 +3,6 @@
   "name": "Open Route Service travel time",
   "documentation": "https://github.com/eifinger/open_route_service",
   "dependencies": [],
-  "config_flow": true,
   "codeowners": [
     "@eifinger"
   ],
