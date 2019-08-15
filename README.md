@@ -1,171 +1,131 @@
-# Notice
-
-The component and platforms in this repository are not meant to be used by a
-user, but as a "blueprint" that custom component developers can build
-upon, to make more awesome stuff.
-
-This blueprint uses ['sampleclient'](https://github.com/ludeeus/sampleclient) to simulate what you actually might use in your integration.
-
-HAVE FUN! 😎
-
-## Why?
-
-This is simple, by having custom_components look (README + structure) the same
-it is easier for developers to help each other and for users to start using them.
-
-If you are a developer and you want to add things to this "blueprint" that you think more
-developers will have use for, please open a PR to add it :)
-
-## What?
-
-This repository contains multiple files, here is a overview:
-
-File | Purpose
--- | --
-`.devcontainer/*` | Used for development/testing with VSCODE, more info in the readme file in that dir.
-`.github/ISSUE_TEMPLATE/feature_request.md` | Template for Feature Requests
-`.github/ISSUE_TEMPLATE/issue.md` | Template for issues
-`.github/settings.yml` | Probot settings to control the repository settings.
-`.vscode/taks.json` | Tasks for the devcontainer.
-`custom_components/blueprint/.translations/*` | [Translation files.](https://developers.home-assistant.io/docs/en/next/internationalization_custom_component_localization.html#translation-strings)
-`custom_components/blueprint/__init__.py` | The component file for the integration.
-`custom_components/blueprint/binary_sensor.py` | Binary sensor platform for the integration.
-`custom_components/blueprint/config_flow.py` | Config flow file, this adds the UI configuration possibilities.
-`custom_components/blueprint/const.py` | A file to hold shared variables/constants for the entire integration.
-`custom_components/blueprint/manifest.json` | A [manifest file](https://developers.home-assistant.io/docs/en/creating_integration_manifest.html) for Home Assistant.
-`custom_components/blueprint/sensor.py` | Sensor platform for the integration.
-`custom_components/blueprint/switch.py` | Switch sensor platform for the integration.
-`CONTRIBUTING.md` | Guidelines on how to contribute.
-`example.png` | Screenshot that demonstrate how it might look in the UI.
-`info.md` | An example on a info file (used by [hacs][hacs]).
-`LICENSE` | The license file for the project.
-`README.md` | The file you are reading now, should contain info about the integration, installation and configuration instructions.
-`requirements.txt` | Python packages used by this integration.
-
-***
-README content if this was a published component:
-***
-
-# blueprint
+# open_route_service
 
 [![GitHub Release][releases-shield]][releases]
 [![GitHub Activity][commits-shield]][commits]
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge)](https://github.com/custom-components/hacs)
 [![License][license-shield]](LICENSE.md)
 
-[![hacs][hacsbadge]][hacs]
 ![Project Maintenance][maintenance-shield]
 [![BuyMeCoffee][buymecoffeebadge]][buymecoffee]
 
-[![Discord][discord-shield]][discord]
 [![Community Forum][forum-shield]][forum]
 
-_Component to integrate with [blueprint][blueprint]._
+_Homeassistant Custom Component sensor provides travel time from [openrouteservices.org](openrouteservices.org)._
 
 **This component will set up the following platforms.**
 
 Platform | Description
 -- | --
-`binary_sensor` | Show something `True` or `False`.
-`sensor` | Show info from blueprint API.
-`switch` | Switch something `True` or `False`.
+`sensor` | Show travel time between two places.
 
 ![example][exampleimg]
 
-## Installation
+## Setup
 
-1. Using the tool of choice open the directory (folder) for your HA configuration (where you find `configuration.yaml`).
-2. If you do not have a `custom_components` directory (folder) there, you need to create it.
-3. In the `custom_components` directory (folder) create a new folder called `blueprint`.
-4. Download _all_ the files from the `custom_components/blueprint/` directory (folder) in this repository.
-5. Place the files you downloaded in the new directory (folder) you created.
-6. Restart Home Assistant
-7. Choose:
-   - Add `blueprint:` to your HA configuration.
-   - In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Blueprint"
+You need to register for an API key [here](https://openrouteservice.org/dev).
 
-Using your HA configuration directory (folder) as a starting point you should now also have this:
+Openroute Services offers a Free Plan which includes 1.000 free requests (For reverse geocoding) per day. More information can be found [here](https://openrouteservice.org/plans/)
 
-```text
-custom_components/blueprint/.translations/en.json
-custom_components/blueprint/.translations/nb.json
-custom_components/blueprint/.translations/sensor.nb.json
-custom_components/blueprint/__init__.py
-custom_components/blueprint/binary_sensor.py
-custom_components/blueprint/config_flow.py
-custom_components/blueprint/const.py
-custom_components/blueprint/manifest.json
-custom_components/blueprint/sensor.py
-custom_components/blueprint/switch.py
-```
+##  Configuration
 
-## Example configuration.yaml
+To enable the sensor, add the following lines to your `configuration.yaml` file:
 
 ```yaml
-blueprint:
-  username: my_username
-  password: my_password
-  binary_sensor:
-    - enabled: true
-      name: My custom name
-  sensor:
-    - enabled: true
-      name: My custom name
-  switch:
-    - enabled: true
-      name: My custom name
+# Example entry for configuration.yaml
+sensor:
+  - platform: open_route_service
+    api_key: "YOUR_API_KEY"
+    origin_latitude: "51.222975"
+    origin_longitude: "9.267577"
+    destination_latitude: "51.257430"
+    destination_longitude: "9.335892"
 ```
 
 ## Configuration options
 
 Key | Type | Required | Description
 -- | -- | -- | --
-`username` | `string` | `False` | Username for the client.
-`password` | `string` | `False` | Password for the client.
-`binary_sensor` | `list` | `False` | Configuration for the `binary_sensor` platform.
-`sensor` | `list` | `False` | Configuration for the `sensor` platform.
-`switch` | `list` | `False` | Configuration for the `switch` platform.
+`api_key` | `string` | `true` | Your application's API key (get one by following the instructions above).
+`origin_latitude` | `string` | `true` | The starting latitude for calculating travel distance and time. Must be used in combination with origin_longitude. Cannot be used in combination with origin_entity_id
+`origin_longitude` | `string` | `true` | The starting longitude for calculating travel distance and time. Must be used in combination with origin_latitude. Cannot be used in combination with origin_entity_id
+`destination_latitude` | `string` | `true` | The finishing latitude for calculating travel distance and time. Must be used in combination with destination_longitude. Cannot be used in combination with destination_entity_id
+`destination_longitude` | `string` | `true` | The finishing longitude for calculating travel distance and time. Must be used in combination with destination_latitude. Cannot be used in combination with destination_entity_id
+`origin_entity_id` | `string` | `true` | The entity_id holding the starting point for calculating travel distance and time. Cannot be used in combination with origin_latitude / origin_longitude
+`destination_entity_id` | `string` | `true` | The entity_id holding the finishing point for calculating travel distance and time. Cannot be used in combination with destination_latitude / destination_longitude
+`name` | `string` | `false` | A name to display on the sensor. The default is "HERE Travel Time".
+`mode` | `string` | `false` | You can choose between: `cycling-regular`, `driving-car` or `foot-walking`. The default is `driving-car`.
+`route_mode` | `string` | `false` | You can choose between: `fastest`, or `shortest`. The default is `fastest`
+`unit_system` | `string` | `false` | You can choose between `metric` or `imperial`. Defaults to `metric` or `imperial` based on the Home Assistant configuration.
+`scan_interval` | `integer` | `false` | "Defines the update interval of the sensor in seconds. Defaults to 300 (5 minutes)."
 
-### Configuration options for `binary_sensor` list
+## Dynamic Configuration
 
-Key | Type | Required | Default | Description
--- | -- | -- | -- | --
-`enabled` | `boolean` | `False` | `True` | Boolean to enable/disable the platform.
-`name` | `string` | `False` | `blueprint` | Custom name for the entity.
+Tracking can be set up to track entities of type `device_tracker`, `zone`, `sensor` and `person`. If an entity is placed in the origin or destination then every 5 minutes when the platform updates it will use the latest location of that entity.
 
-### Configuration options for `sensor` list
+```yaml
+# Example entry for configuration.yaml
+sensor:
+  # Tracking entity to entity
+  - platform: here_travel_time
+    app_id: "YOUR_APP_ID"
+    app_code: "YOUR_APP_CODE"
+    name: Phone To Home
+    origin_entity_id: device_tracker.mobile_phone
+    destination_entity_id: zone.home
+```
 
-Key | Type | Required | Default | Description
--- | -- | -- | -- | --
-`enabled` | `boolean` | `False` | `True` | Boolean to enable/disable the platform.
-`name` | `string` | `False` | `blueprint` | Custom name for the entity.
+## Entity Tracking
 
+- **device_tracker**
+  - If the state is a zone, then the zone location will be used
+  - If the state is not a zone, it will look for the longitude and latitude attributes
+- **zone**
+  - Uses the longitude and latitude attributes
+- **sensor**
+  - If the state is a zone, then will use the zone location
+  - All other states will be passed directly into the HERE API
+    - This includes all valid locations listed in the *Configuration Variables*
 
-### Configuration options for `switch` list
+## Updating sensors on-demand using Automation
 
-Key | Type | Required | Default | Description
--- | -- | -- | -- | --
-`enabled` | `boolean` | `False` | `True` | Boolean to enable/disable the platform.
-`name` | `string` | `False` | `blueprint` | Custom name for the entity.
+You can also use the `homeassistant.update_entity` service to update the sensor on-demand. For example, if you want to update `sensor.morning_commute` every 2 minutes on weekday mornings, you can use the following automation:
 
-## Contributions are welcome!
+```yaml
+automation:
+- id: update_morning_commute_sensor
+  alias: "Commute - Update morning commute sensor"
+  initial_state: 'on'
+  trigger:
+    - platform: time_pattern
+      minutes: '/2'
+  condition:
+    - condition: time
+      after: '08:00:00'
+      before: '11:00:00'
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+  action:
+    - service: homeassistant.update_entity
+      entity_id: sensor.morning_commute
+```
 
-If you want to contribute to this please read the [Contribution guidelines](CONTRIBUTING.md)
+<a href="https://www.buymeacoffee.com/eifinger" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/black_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a><br>
 
-***
-
-[blueprint]: https://github.com/custom-components/blueprint
-[buymecoffee]: https://www.buymeacoffee.com/ludeeus
+[buymecoffee]: https://www.buymeacoffee.com/eifinger
 [buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=for-the-badge
-[commits-shield]: https://img.shields.io/github/commit-activity/y/custom-components/blueprint.svg?style=for-the-badge
-[commits]: https://github.com/custom-components/blueprint/commits/master
-[hacs]: https://github.com/custom-components/hacs
-[hacsbadge]: https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge
-[discord]: https://discord.gg/Qa5fW2R
-[discord-shield]: https://img.shields.io/discord/330944238910963714.svg?style=for-the-badge
-[exampleimg]: example.png
+[commits-shield]: https://img.shields.io/github/commit-activity/y/eifinger/open_route_service?style=for-the-badge
+[commits]: https://github.com/eifinger/open_route_service/commits/master
+[customupdater]: https://github.com/custom-components/custom_updater
+[customupdaterbadge]: https://img.shields.io/badge/custom__updater-true-success.svg?style=for-the-badge
+[exampleimg]: https://github.com/eifinger/open_route_service/blob/master/example.png?raw=true
 [forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
-[forum]: https://community.home-assistant.io/
-[license-shield]: https://img.shields.io/github/license/custom-components/blueprint.svg?style=for-the-badge
-[maintenance-shield]: https://img.shields.io/badge/maintainer-Joakim%20Sørensen%20%40ludeeus-blue.svg?style=for-the-badge
-[releases-shield]: https://img.shields.io/github/release/custom-components/blueprint.svg?style=for-the-badge
-[releases]: https://github.com/custom-components/blueprint/releases
+[forum]: https://community.home-assistant.io/t/custom-component-open-route-service-travel-time/131941
+[license-shield]: https://img.shields.io/github/license/eifinger/open_route_service.svg?style=for-the-badge
+[maintenance-shield]: https://img.shields.io/badge/maintainer-Kevin%20Eifinger%20%40eifinger-blue.svg?style=for-the-badge
+[releases-shield]: https://img.shields.io/github/release/eifinger/open_route_service.svg?style=for-the-badge
+[releases]: https://github.com/eifinger/open_route_service/releases
