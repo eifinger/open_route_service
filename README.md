@@ -89,9 +89,8 @@ Tracking can be set up to track entities of type `device_tracker`, `zone`, `sens
 # Example entry for configuration.yaml
 sensor:
   # Tracking entity to entity
-  - platform: here_travel_time
-    app_id: "YOUR_APP_ID"
-    app_code: "YOUR_APP_CODE"
+  - platform: open_route_service
+    api_key: "YOUR_API_KEY"
     name: Phone To Home
     origin_entity_id: device_tracker.mobile_phone
     destination_entity_id: zone.home
