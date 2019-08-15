@@ -13,6 +13,9 @@
 ## Features
 
 ## Bugfixes
+{% if version_installed.replace("v", "").replace(".","") | int < 101  %}
+- Fix Dynamic Configuration Example
+{% endif %}
 
 ---
 {% endif %}
