@@ -20,6 +20,29 @@ Platform | Description
 
 ![example][exampleimg]
 
+## Installation
+
+### HACS
+
+The easiest way to add this to your Homeassistant installation is using [HACS](https://custom-components.github.io/hacs/). And then follow the instructions under [Configuration](#configuration) below.
+
+### Manual
+
+1. Using the tool of choice open the directory (folder) for your HA configuration (where you find `configuration.yaml`).
+2. If you do not have a `custom_components` directory (folder) there, you need to create it.
+3. In the `custom_components` directory (folder) create a new folder called `open_route_service`.
+4. Download _all_ the files from the `custom_components/open_route_service/` directory (folder) in this repository.
+5. Place the files you downloaded in the new directory (folder) you created.
+6. Follow the instructions under [Configuration](#configuration) below.
+
+Using your HA configuration directory (folder) as a starting point you should now also have this:
+
+```text
+custom_components/open_route_service/__init__.py
+custom_components/open_route_service/manifest.json
+custom_components/open_route_service/sensor.py
+```
+
 ## Setup
 
 You need to register for an API key [here](https://openrouteservice.org/dev).
