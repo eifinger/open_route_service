@@ -18,7 +18,7 @@ from homeassistant.const import (
     CONF_UNIT_SYSTEM_METRIC,
     EVENT_HOMEASSISTANT_START,
 )
-from homeassistant.core import HomeAssistant, State
+from homeassistant.core import HomeAssistant, State, callback
 from homeassistant.helpers import location
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.entity import Entity
