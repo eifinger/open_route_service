@@ -16,6 +16,7 @@ from homeassistant.const import (
     CONF_UNIT_SYSTEM,
     CONF_UNIT_SYSTEM_IMPERIAL,
     CONF_UNIT_SYSTEM_METRIC,
+    EVENT_HOMEASSISTANT_START,
 )
 from homeassistant.core import HomeAssistant, State
 from homeassistant.helpers import location
@@ -173,6 +174,18 @@ class OpenRouteTravelTimeSensor(Entity):
             self._destination_entity_id = destination
         else:
             self._open_route_data.destination = destination
+
+    async def async_added_to_hass(self) -> None:
+        """Delay the sensor update to avoid entity not found warnings."""
+
+        @callback
+        def delayed_sensor_update(event):
+            """Update sensor after Home Assistant started."""
+            self.async_schedule_update_ha_state(True)
+
+        self.hass.bus.async_listen_once(
+            EVENT_HOMEASSISTANT_START, delayed_sensor_update
+        )
 
     @property
     def state(self) -> Optional[str]:
