@@ -202,7 +202,7 @@ class OpenRouteTravelTimeSensor(Entity):
 
     @property
     def device_state_attributes(
-        self
+        self,
     ) -> Optional[Dict[str, Union[None, float, str, bool]]]:
         """Return the state attributes."""
         if self._open_route_data.duration is None:
@@ -334,14 +334,18 @@ class OpenRouteTravelTimeData:
             steps = routes[0]["segments"][0]["steps"]
 
             self.attribution = directions_response["metadata"]["attribution"]
-            self.duration = summary["duration"]
-            distance = summary["distance"]
-            if self.units == CONF_UNIT_SYSTEM_IMPERIAL:
-                # Convert to miles.
-                self.distance = distance / 1609.344
+            if "duration" in summary:
+                self.duration = summary["duration"]
+                distance = summary["distance"]
+                if self.units == CONF_UNIT_SYSTEM_IMPERIAL:
+                    # Convert to miles.
+                    self.distance = distance / 1609.344
+                else:
+                    # Convert to kilometers
+                    self.distance = distance / 1000
             else:
-                # Convert to kilometers
-                self.distance = distance / 1000
+                self.duration = 0
+                self.distance = 0
 
             self.route = self._get_route_from_steps(steps)
 
