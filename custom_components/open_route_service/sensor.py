@@ -349,26 +349,35 @@ class OpenRouteTravelTimeData:
                     self.distance = 0
 
                 self.route = self._get_route_from_steps(steps)
-                self.origin_name = self._get_name_for_coordinates(self._client, self.origin)
-                self.destination_name = self._get_name_for_coordinates(self._client, self.destination)
+                self.origin_name = self._get_name_for_coordinates(
+                    self._client, self.origin
+                )
+                self.destination_name = self._get_name_for_coordinates(
+                    self._client, self.destination
+                )
             except openrouteservice.exceptions.HTTPError as exception:
-                _LOGGER.error("Error while trying to resolve coordinates %s to a name: %s", coordinates, exception)
+                _LOGGER.error(
+                    "Error getting data from openrouteservice.org: %s",
+                    exception,
+                )
 
     @staticmethod
-    def _get_name_for_coordinates(client: openrouteservice.Client, coordinates: str) -> str:
+    def _get_name_for_coordinates(
+        client: openrouteservice.Client, coordinates: str
+    ) -> str:
         """Use the reverse geocode api to resolve the coordinates to a name."""
         _LOGGER.debug("Requesting reverse geocode for : %s", coordinates)
         reverse_geocode_origin = list(coordinates.split(","))[::-1]
         try:
-            reverse_origin_response = client.pelias_reverse(
-                reverse_geocode_origin
-            )
+            reverse_origin_response = client.pelias_reverse(reverse_geocode_origin)
 
-            return reverse_origin_response["features"][0]["properties"][
-                "label"
-            ]
+            return reverse_origin_response["features"][0]["properties"]["label"]
         except openrouteservice.exceptions.HTTPError as exception:
-            _LOGGER.warning("Error while trying to resolve coordinates %s to a name: %s", coordinates, exception)
+            _LOGGER.warning(
+                "Error while trying to resolve coordinates %s to a name: %s",
+                coordinates,
+                exception,
+            )
             return ""
 
     @staticmethod
