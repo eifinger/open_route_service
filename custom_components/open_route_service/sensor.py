@@ -294,7 +294,7 @@ class OpenRouteTravelTimeData:
         route_mode: str,
         units: str,
     ) -> None:
-        """Initialize herepy."""
+        """Initialize openrouteservice."""
         self.origin = origin
         self.destination = destination
         self.travel_mode = travel_mode
@@ -325,52 +325,55 @@ class OpenRouteTravelTimeData:
                 self.route_mode,
                 self.travel_mode,
             )
-            directions_response = self._client.directions(
-                coords, profile=self.travel_mode, preference=self.route_mode
-            )
+            try:
+                directions_response = self._client.directions(
+                    coords, profile=self.travel_mode, preference=self.route_mode
+                )
 
-            routes = directions_response["routes"]
-            summary = routes[0]["summary"]
-            steps = routes[0]["segments"][0]["steps"]
+                routes = directions_response["routes"]
+                summary = routes[0]["summary"]
+                steps = routes[0]["segments"][0]["steps"]
 
-            self.attribution = directions_response["metadata"]["attribution"]
-            if "duration" in summary:
-                self.duration = summary["duration"]
-                distance = summary["distance"]
-                if self.units == CONF_UNIT_SYSTEM_IMPERIAL:
-                    # Convert to miles.
-                    self.distance = distance / 1609.344
+                self.attribution = directions_response["metadata"]["attribution"]
+                if "duration" in summary:
+                    self.duration = summary["duration"]
+                    distance = summary["distance"]
+                    if self.units == CONF_UNIT_SYSTEM_IMPERIAL:
+                        # Convert to miles.
+                        self.distance = distance / 1609.344
+                    else:
+                        # Convert to kilometers
+                        self.distance = distance / 1000
                 else:
-                    # Convert to kilometers
-                    self.distance = distance / 1000
-            else:
-                self.duration = 0
-                self.distance = 0
+                    self.duration = 0
+                    self.distance = 0
 
-            self.route = self._get_route_from_steps(steps)
+                self.route = self._get_route_from_steps(steps)
+                self.origin_name = self._get_name_for_coordinates(self._client, self.origin)
+                self.destination_name = self._get_name_for_coordinates(self._client, self.destination)
+            except openrouteservice.exceptions.HTTPError as exception:
+                _LOGGER.error("Error while trying to resolve coordinates %s to a name: %s", coordinates, exception)
 
-            _LOGGER.debug("Requesting reverse geocode for : %s", self.destination)
-            reverse_geocode_destination = list(self.destination.split(","))[::-1]
-            reverse_destination_response = self._client.pelias_reverse(
-                reverse_geocode_destination
-            )
-
-            _LOGGER.debug("Requesting reverse geocode for : %s", self.origin)
-            reverse_geocode_origin = list(self.origin.split(","))[::-1]
-            reverse_origin_response = self._client.pelias_reverse(
+    @staticmethod
+    def _get_name_for_coordinates(client: openrouteservice.Client, coordinates: str) -> str:
+        """Use the reverse geocode api to resolve the coordinates to a name."""
+        _LOGGER.debug("Requesting reverse geocode for : %s", coordinates)
+        reverse_geocode_origin = list(coordinates.split(","))[::-1]
+        try:
+            reverse_origin_response = client.pelias_reverse(
                 reverse_geocode_origin
             )
 
-            self.origin_name = reverse_origin_response["features"][0]["properties"][
+            return reverse_origin_response["features"][0]["properties"][
                 "label"
             ]
-            self.destination_name = reverse_destination_response["features"][0][
-                "properties"
-            ]["label"]
+        except openrouteservice.exceptions.HTTPError as exception:
+            _LOGGER.warning("Error while trying to resolve coordinates %s to a name: %s", coordinates, exception)
+            return ""
 
     @staticmethod
     def _get_route_from_steps(steps: List[dict]) -> str:
-        """Extract a Waze-like route from the maneuver instructions."""
+        """Extract a Waze-like route from the steps."""
         road_names: List[str] = []
 
         for step in steps:

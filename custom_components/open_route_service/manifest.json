@@ -7,6 +7,6 @@
     "@eifinger"
   ],
   "requirements": [
-    "openrouteservice==2.2.2"
+    "openrouteservice==2.3.0"
   ]
 }
