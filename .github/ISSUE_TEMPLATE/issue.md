@@ -33,7 +33,15 @@ A clear and concise description of what the bug is.
 
 ## Debug log
 
-<!-- To enable debug logs check this https://www.home-assistant.io/components/logger/ -->
+<!-- To enable debug logs check this https://www.home-assistant.io/components/logger/ 
+
+A correct logger configuration with debug logging for this component looks like this:
+logger:
+  default: critical
+  logs:
+    custom_components.open_route_service: debug
+
+-->
 
 ```text
 
