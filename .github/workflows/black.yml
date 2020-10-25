@@ -5,11 +5,14 @@ name: Black
 
 on:
   push:
+    branches-ignore:
+      - master
   pull_request:
+    branches-ignore:
+      - master
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
