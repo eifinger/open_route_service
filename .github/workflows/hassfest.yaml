@@ -2,7 +2,11 @@ name: Hassfest
 
 on:
   push:
+    branches-ignore:
+      - master
   pull_request:
+    branches-ignore:
+      - master
   schedule:
     - cron: "0 0 * * *"
 

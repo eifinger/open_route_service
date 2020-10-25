@@ -2,7 +2,11 @@ name: Pytest
 
 on:
   push:
+    branches-ignore:
+      - master
   pull_request:
+    branches-ignore:
+      - master
   schedule:
     - cron: "0 7 1-28/7 * *"
 
