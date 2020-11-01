@@ -10,7 +10,7 @@
 
 [![Community Forum][forum-shield]][forum]
 
-_Homeassistant Custom Component sensor provides travel time from [https://maps.openrouteservice.org/](openrouteservices.org)._
+_Homeassistant Custom Component sensor provides travel time from [https://maps.openrouteservice.org/](https://maps.openrouteservice.org/)._
 
 **This component will set up the following platforms.**
 
