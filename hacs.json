@@ -1,0 +1,5 @@
+{
+    "name": "open_route_service",
+    "domains": ["sensor"],
+    "iot_class": ["Cloud Polling"]
+  }
