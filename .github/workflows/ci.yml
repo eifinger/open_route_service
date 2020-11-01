@@ -66,7 +66,7 @@ jobs:
         run: |
           python -m pytest
   hacs_validate:
-    name: HACS Validate
+    name: "HACS Validate"
     runs-on: "ubuntu-latest"
     steps:
       - uses: "actions/checkout@v2"
