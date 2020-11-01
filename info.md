@@ -79,6 +79,8 @@ Key | Type | Required | Description
 `route_mode` | `string` | `false` | You can choose between: `fastest`, or `shortest`. The default is `fastest`
 `unit_system` | `string` | `false` | You can choose between `metric` or `imperial`. Defaults to `metric` or `imperial` based on the Home Assistant configuration.
 `scan_interval` | `integer` | `false` | "Defines the update interval of the sensor in seconds. Defaults to 300 (5 minutes)."
+`origin_reverse_geocode_enabled` | `boolean` | `false` | "Whether to resolve the origin coordinates to a geolocation(address). Defaults to true."
+`destination_reverse_geocode_enabled` | `boolean` | `false` | "Whether to resolve the destination coordinates to a geolocation(address). Defaults to true."
 
 ## Dynamic Configuration
 

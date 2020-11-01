@@ -33,6 +33,8 @@ CONF_ORIGIN_LONGITUDE = "origin_longitude"
 CONF_ORIGIN_ENTITY_ID = "origin_entity_id"
 CONF_API_KEY = "api_key"
 CONF_ROUTE_MODE = "route_mode"
+CONF_ORIGIN_REVERSE_GEOCODE_ENABLED = "origin_reverse_geocode_enabled"
+CONF_DESTINATION_REVERSE_GEOCODE_ENABLED = "destination_reverse_geocode_enabled"
 
 DEFAULT_NAME = "Openroute Service Travel Time"
 
@@ -97,6 +99,10 @@ PLATFORM_SCHEMA = vol.All(
                 ROUTE_MODE
             ),
             vol.Optional(CONF_UNIT_SYSTEM): vol.In(UNITS),
+            vol.Optional(CONF_ORIGIN_REVERSE_GEOCODE_ENABLED, default=True): cv.boolean,
+            vol.Optional(
+                CONF_DESTINATION_REVERSE_GEOCODE_ENABLED, default=True
+            ): cv.boolean,
         }
     ),
 )
@@ -111,7 +117,6 @@ async def async_setup_platform(
     """Set up the HERE travel time platform."""
     hass.data.setdefault(DATA_KEY, [])
 
-    api_key = config[CONF_API_KEY]
     if config.get(CONF_ORIGIN_LATITUDE) is not None:
         origin = ",".join(
             [str(config[CONF_ORIGIN_LATITUDE]), str(config[CONF_ORIGIN_LONGITUDE])]
@@ -129,13 +134,17 @@ async def async_setup_platform(
     else:
         destination = config[CONF_DESTINATION_ENTITY_ID]
 
-    travel_mode = config.get(CONF_MODE)
-    route_mode = config.get(CONF_ROUTE_MODE)
     name = config.get(CONF_NAME)
-    units = config.get(CONF_UNIT_SYSTEM, hass.config.units.name)
 
     open_route_data = OpenRouteTravelTimeData(
-        None, None, api_key, travel_mode, route_mode, units
+        None,
+        None,
+        config[CONF_API_KEY],
+        config.get(CONF_MODE),
+        config.get(CONF_ROUTE_MODE),
+        config.get(CONF_UNIT_SYSTEM, hass.config.units.name),
+        config[CONF_ORIGIN_REVERSE_GEOCODE_ENABLED],
+        config[CONF_DESTINATION_REVERSE_GEOCODE_ENABLED],
     )
 
     sensor = OpenRouteTravelTimeSensor(hass, name, origin, destination, open_route_data)
@@ -293,6 +302,8 @@ class OpenRouteTravelTimeData:
         travel_mode: str,
         route_mode: str,
         units: str,
+        origin_reverse_geocode_enabled: bool,
+        destination_reverse_geocode_enabled: bool,
     ) -> None:
         """Initialize openrouteservice."""
         self.origin = origin
@@ -307,6 +318,8 @@ class OpenRouteTravelTimeData:
         self.origin_name = None
         self.destination_name = None
         self.units = units
+        self.origin_reverse_geocode_enabled = origin_reverse_geocode_enabled
+        self.destination_reverse_geocode_enabled = destination_reverse_geocode_enabled
         self._client = openrouteservice.Client(key=api_key)
 
     def update(self) -> None:
@@ -349,12 +362,14 @@ class OpenRouteTravelTimeData:
                     self.distance = 0
 
                 self.route = self._get_route_from_steps(steps)
-                self.origin_name = self._get_name_for_coordinates(
-                    self._client, self.origin
-                )
-                self.destination_name = self._get_name_for_coordinates(
-                    self._client, self.destination
-                )
+                if self.origin_reverse_geocode_enabled:
+                    self.origin_name = self._get_name_for_coordinates(
+                        self._client, self.origin
+                    )
+                if self.destination_reverse_geocode_enabled:
+                    self.destination_name = self._get_name_for_coordinates(
+                        self._client, self.destination
+                    )
             except openrouteservice.exceptions.HTTPError as exception:
                 _LOGGER.error(
                     "Error getting data from openrouteservice.org: %s",
