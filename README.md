@@ -24,7 +24,7 @@ Platform | Description
 
 ### HACS
 
-The easiest way to add this to your Homeassistant installation is using [HACS](https://custom-components.github.io/hacs/). And then follow the instructions under [Configuration](#configuration) below.
+The easiest way to add this to your Home Assistant installation is using [HACS](https://custom-components.github.io/hacs/).  No custom repository is needed, just search HACS for "Open Route Service" under Integrations and install it. You'll need to restart Home Assisant before you can follow the instructions under [Configuration](#configuration) below/
 
 ### Manual
 
