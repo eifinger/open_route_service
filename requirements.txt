@@ -1,2 +1,4 @@
+pytest-homeassistant-custom-component
+pytest-homeassistant-custom-component
 black==20.8b1
 openrouteservice==2.3.0
