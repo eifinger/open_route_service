@@ -1,13 +1,10 @@
 """Tests for open_route_service."""
-import pytest
 import os
 import json
+from unittest.mock import patch
 
-from homeassistant.const import ATTR_ICON, EVENT_HOMEASSISTANT_START
+from homeassistant.const import EVENT_HOMEASSISTANT_START
 from homeassistant.setup import async_setup_component
-
-from pytest_homeassistant_custom_component.async_mock import patch
-from pytest_homeassistant_custom_component.common import async_fire_time_changed
 
 
 def load_fixture(filename):
