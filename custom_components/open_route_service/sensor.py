@@ -327,8 +327,8 @@ class OpenRouteTravelTimeData:
 
         if self.destination is not None and self.origin is not None:
             coords = (
-                list(self.destination.split(","))[::-1],
                 list(self.origin.split(","))[::-1],
+                list(self.destination.split(","))[::-1],
             )
 
             _LOGGER.debug(
