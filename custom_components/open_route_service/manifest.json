@@ -2,6 +2,7 @@
   "domain": "open_route_service",
   "name": "Open Route Service travel time",
   "documentation": "https://github.com/eifinger/open_route_service",
+  "issue_tracker": "https://github.com/eifinger/open_route_service/issues",
   "dependencies": [],
   "version": "1.1.1",
   "codeowners": [
