@@ -10,5 +10,6 @@
   ],
   "requirements": [
     "openrouteservice==2.3.3"
-  ]
+  ],
+  "iot_class": "cloud_polling"
 }
