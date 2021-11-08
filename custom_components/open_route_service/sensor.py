@@ -273,7 +273,7 @@ class OpenRouteTravelTimeSensor(Entity):
             return self._get_location_from_attributes(entity)
 
         # Check if device is in a zone
-        zone_entity = self._hass.states.get("zone.{}".format(entity.state))
+        zone_entity = self._hass.states.get(f"zone.{entity.state}")
         if location.has_location(zone_entity):
             _LOGGER.debug(
                 "%s is in %s, getting zone location", entity_id, zone_entity.entity_id
@@ -288,7 +288,7 @@ class OpenRouteTravelTimeSensor(Entity):
     def _get_location_from_attributes(entity: State) -> str:
         """Get the lat/long string from an entities attributes."""
         attr = entity.attributes
-        return "{},{}".format(attr.get(ATTR_LATITUDE), attr.get(ATTR_LONGITUDE))
+        return f"{attr.get(ATTR_LATITUDE)},{attr.get(ATTR_LONGITUDE)}"
 
 
 class OpenRouteTravelTimeData:
