@@ -1,4 +1,4 @@
-pytest-homeassistant-custom-component==0.5.14
+pytest-homeassistant-custom-component==0.8.12
 pylint==2.13.0
 black==22.1.0
 openrouteservice==2.3.3
