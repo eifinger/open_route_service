@@ -39,19 +39,29 @@ CONF_DESTINATION_REVERSE_GEOCODE_ENABLED = "destination_reverse_geocode_enabled"
 DEFAULT_NAME = "Openroute Service Travel Time"
 
 TRAVEL_MODE_BICYCLE = "cycling-regular"
+TRAVEL_MODE_ROADBIKE = "cycling-road"
+TRAVEL_MODE_MTB = "cycling-mountain"
 TRAVEL_MODE_EBIKE = "cycling-electric"
 TRAVEL_MODE_CAR = "driving-car"
+TRAVEL_MODE_CARHVG = "driving-hvg"
 TRAVEL_MODE_PEDESTRIAN = "foot-walking"
-TRAVEL_MODE = [TRAVEL_MODE_BICYCLE, TRAVEL_MODE_EBIKE , TRAVEL_MODE_CAR, TRAVEL_MODE_PEDESTRIAN]
+TRAVEL_MODE_HIKING = "foot-hiking"
+TRAVEL_MODE_WHEELCHAIR = "wheelchair"
+TRAVEL_MODE = [TRAVEL_MODE_BICYCLE, TRAVEL_MODE_ROADBIKE, TRAVEL_MODE_MTB, TRAVEL_MODE_EBIKE , TRAVEL_MODE_CAR, TRAVEL_MODE_CARHVG, TRAVEL_MODE_PEDESTRIAN, TRAVEL_MODE_HIKING, TRAVEL_MODE_WHEELCHAIR]
 
 ROUTE_MODE_FASTEST = "fastest"
 ROUTE_MODE_SHORTEST = "shortest"
 ROUTE_MODE = [ROUTE_MODE_FASTEST, ROUTE_MODE_SHORTEST]
 
 ICON_BICYCLE = "mdi:bike"
+ICON_ROADBIKE = "mdi:bike"
+ICON_MTB = "mdi:bike"
 ICON_EBIKE = "mdi:bicycle-electric"
 ICON_CAR = "mdi:car"
+ICON_CARHVG = "mid:bus"
 ICON_PEDESTRIAN = "mdi:walk"
+ICON_HIKING = "mdi:hiking"
+ICON_WHEELCHAIR = "mdi:wheelchair-accessibility"
 
 UNITS = [CONF_UNIT_SYSTEM_METRIC, CONF_UNIT_SYSTEM_IMPERIAL]
 
@@ -243,10 +253,20 @@ class OpenRouteTravelTimeSensor(Entity):
         """Icon to use in the frontend depending on travel_mode."""
         if self._open_route_data.travel_mode == TRAVEL_MODE_BICYCLE:
             return ICON_BICYCLE
+        if self._open_route_data.travel_mode == TRAVEL_MODE_ROADBIKE:
+            return ICON_ROADBIKE
+        if self._open_route_data.travel_mode == TRAVEL_MODE_MTB:
+            return ICON_MTB                        
         if self._open_route_data.travel_mode == TRAVEL_MODE_EBIKE:
             return ICON_EBIKE            
         if self._open_route_data.travel_mode == TRAVEL_MODE_PEDESTRIAN:
             return ICON_PEDESTRIAN
+        if self._open_route_data.travel_mode == TRAVEL_MODE_HIKING:
+            return ICON_HIKING
+        if self._open_route_data.travel_mode == TRAVEL_MODE_WHEELCHAIR:
+            return ICON_WHEELCHAIR
+        if self._open_route_data.travel_mode == TRAVEL_MODE_CARHVG:
+            return ICON_CARHVG                                    
         return ICON_CAR
 
     async def async_update(self) -> None:
