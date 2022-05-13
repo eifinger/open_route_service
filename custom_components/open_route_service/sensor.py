@@ -47,7 +47,17 @@ TRAVEL_MODE_CARHVG = "driving-hvg"
 TRAVEL_MODE_PEDESTRIAN = "foot-walking"
 TRAVEL_MODE_HIKING = "foot-hiking"
 TRAVEL_MODE_WHEELCHAIR = "wheelchair"
-TRAVEL_MODE = [TRAVEL_MODE_BICYCLE, TRAVEL_MODE_ROADBIKE, TRAVEL_MODE_MTB, TRAVEL_MODE_EBIKE , TRAVEL_MODE_CAR, TRAVEL_MODE_CARHVG, TRAVEL_MODE_PEDESTRIAN, TRAVEL_MODE_HIKING, TRAVEL_MODE_WHEELCHAIR]
+TRAVEL_MODE = [
+    TRAVEL_MODE_BICYCLE,
+    TRAVEL_MODE_ROADBIKE,
+    TRAVEL_MODE_MTB,
+    TRAVEL_MODE_EBIKE,
+    TRAVEL_MODE_CAR,
+    TRAVEL_MODE_CARHVG,
+    TRAVEL_MODE_PEDESTRIAN,
+    TRAVEL_MODE_HIKING,
+    TRAVEL_MODE_WHEELCHAIR,
+]
 
 ROUTE_MODE_FASTEST = "fastest"
 ROUTE_MODE_SHORTEST = "shortest"
@@ -256,9 +266,9 @@ class OpenRouteTravelTimeSensor(Entity):
         if self._open_route_data.travel_mode == TRAVEL_MODE_ROADBIKE:
             return ICON_ROADBIKE
         if self._open_route_data.travel_mode == TRAVEL_MODE_MTB:
-            return ICON_MTB                        
+            return ICON_MTB
         if self._open_route_data.travel_mode == TRAVEL_MODE_EBIKE:
-            return ICON_EBIKE            
+            return ICON_EBIKE
         if self._open_route_data.travel_mode == TRAVEL_MODE_PEDESTRIAN:
             return ICON_PEDESTRIAN
         if self._open_route_data.travel_mode == TRAVEL_MODE_HIKING:
@@ -266,7 +276,7 @@ class OpenRouteTravelTimeSensor(Entity):
         if self._open_route_data.travel_mode == TRAVEL_MODE_WHEELCHAIR:
             return ICON_WHEELCHAIR
         if self._open_route_data.travel_mode == TRAVEL_MODE_CARHVG:
-            return ICON_CARHVG                                    
+            return ICON_CARHVG
         return ICON_CAR
 
     async def async_update(self) -> None:
