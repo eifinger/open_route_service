@@ -1,4 +1,4 @@
 pytest-homeassistant-custom-component==0.5.14
-pylint==2.13.8
+pylint==2.13.9
 black==22.3.0
 openrouteservice==2.3.3
