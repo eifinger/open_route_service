@@ -24,7 +24,8 @@
 
 [![GitHub Release][releases-shield]][releases]
 [![GitHub Activity][commits-shield]][commits]
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge)](https://github.com/custom-components/hacs)
+[![hacs][hacsbadge]][hacs]
+![HACS Installs][hacs-installs-shield]
 [![License][license-shield]](LICENSE.md)
 
 ![Project Maintenance][maintenance-shield]
@@ -48,7 +49,7 @@ You need to register for an API key [here](https://openrouteservice.org/dev).
 
 Openroute Services offers a Free Plan which includes 1.000 free requests (For reverse geocoding) per day. More information can be found [here](https://openrouteservice.org/plans/)
 
-##  Configuration
+## Configuration
 
 To enable the sensor, add the following lines to your `configuration.yaml` file:
 
@@ -107,7 +108,7 @@ sensor:
 - **sensor**
   - If the state is a zone, then will use the zone location
   - All other states will be passed directly into the HERE API
-    - This includes all valid locations listed in the *Configuration Variables*
+    - This includes all valid locations listed in the _Configuration Variables_
 
 ## Updating sensors on-demand using Automation
 
@@ -143,8 +144,9 @@ automation:
 [buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=for-the-badge
 [commits-shield]: https://img.shields.io/github/commit-activity/y/eifinger/open_route_service?style=for-the-badge
 [commits]: https://github.com/eifinger/open_route_service/commits/master
-[customupdater]: https://github.com/custom-components/custom_updater
-[customupdaterbadge]: https://img.shields.io/badge/custom__updater-true-success.svg?style=for-the-badge
+[hacs]: https://github.com/hacs/integration
+[hacsbadge]: https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge
+[hacs-installs-shield]: https://img.shields.io/badge/dynamic/json?color=41BDF5&logo=home-assistant&label=installs&style=for-the-badge&cacheSeconds=15600&url=https://analytics.home-assistant.io/custom_integrations.json&query=$.open_route_services.total
 [exampleimg]: https://github.com/eifinger/open_route_service/blob/master/example.png?raw=true
 [forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
 [forum]: https://community.home-assistant.io/t/custom-component-open-route-service-travel-time/131941
