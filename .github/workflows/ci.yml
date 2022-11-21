@@ -113,7 +113,7 @@ jobs:
       - name: Install semantic release
         run: npm install semantic-release
       - name: Create new release
-        uses: cycjimmy/semantic-release-action@v2
+        uses: cycjimmy/semantic-release-action@v3
         id: semantic
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
