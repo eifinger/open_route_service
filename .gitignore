@@ -1,3 +1,7 @@
 .devcontainer/secrets.yaml
 venv/
 *.pyc
+__pycache__
+pythonenv*
+.venv
+.coverage

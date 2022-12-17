@@ -1,25 +1,3 @@
-{% if prerelease %}
-# This is a Beta version!
----
-{% endif %}
-
-{% if installed version_installed != selected_tag %}
-# Changes as compared to your installed version:
-
-## Breaking Changes
-
-## Changes
-
-## Features
-
-## Bugfixes
-{% if version_installed.replace("v", "").replace(".","") | int < 101  %}
-- Fix Dynamic Configuration Example
-{% endif %}
-
----
-{% endif %}
-
 # open_route_service
 
 [![GitHub Release][releases-shield]][releases]
