@@ -1,5 +1,18 @@
 # open_route_service
 
+## !!!! NO LONGER MAINTAINED !!!!
+
+I decided to longer maintain this component. I currently do not have enough free time I want to spend on it.
+
+My decision is based on the fact, that I don't see an added benefit of this integration over [Waze](https://www.home-assistant.io/integrations/waze_travel_time/), [Google](https://www.home-assistant.io/integrations/google_travel_time/) or [HERE](https://www.home-assistant.io/integrations/here_travel_time/).
+
+- Has a higher entry barrier as `waze_travel_time` as it needs an account to generate an API key
+- Does not provide live-traffic data and going by [this](https://ask.openrouteservice.org/t/live-time-traffic/1756) post it will not have it in the near future
+
+I suggest to use the [HERE Traveltime Integration](https://www.home-assistant.io/integrations/here_travel_time/) as an alternative
+
+---
+
 [![GitHub Release][releases-shield]][releases]
 [![GitHub Activity][commits-shield]][commits]
 [![hacs][hacsbadge]][hacs]
@@ -15,9 +28,9 @@ _Homeassistant Custom Component sensor provides travel time from [https://maps.o
 
 **This component will set up the following platforms.**
 
-Platform | Description
--- | --
-`sensor` | Show travel time between two places.
+| Platform | Description                          |
+| -------- | ------------------------------------ |
+| `sensor` | Show travel time between two places. |
 
 ![example][exampleimg]
 
@@ -67,22 +80,22 @@ sensor:
 
 ## Configuration options
 
-Key | Type | Required | Description
--- | -- | -- | --
-`api_key` | `string` | `true` | Your application's API key (get one by following the instructions above).
-`origin_latitude` | `string` | `true` | The starting latitude for calculating travel distance and time. Must be used in combination with origin_longitude. Cannot be used in combination with origin_entity_id
-`origin_longitude` | `string` | `true` | The starting longitude for calculating travel distance and time. Must be used in combination with origin_latitude. Cannot be used in combination with origin_entity_id
-`destination_latitude` | `string` | `true` | The finishing latitude for calculating travel distance and time. Must be used in combination with destination_longitude. Cannot be used in combination with destination_entity_id
-`destination_longitude` | `string` | `true` | The finishing longitude for calculating travel distance and time. Must be used in combination with destination_latitude. Cannot be used in combination with destination_entity_id
-`origin_entity_id` | `string` | `true` | The entity_id holding the starting point for calculating travel distance and time. Cannot be used in combination with origin_latitude / origin_longitude
-`destination_entity_id` | `string` | `true` | The entity_id holding the finishing point for calculating travel distance and time. Cannot be used in combination with destination_latitude / destination_longitude
-`name` | `string` | `false` | A name to display on the sensor. The default is "HERE Travel Time".
-`mode` | `string` | `false` | You can choose between: `cycling-regular`, `driving-car` or `foot-walking`. The default is `driving-car`.
-`route_mode` | `string` | `false` | You can choose between: `fastest`, or `shortest`. The default is `fastest`
-`unit_system` | `string` | `false` | You can choose between `metric` or `imperial`. Defaults to `metric` or `imperial` based on the Home Assistant configuration.
-`scan_interval` | `integer` | `false` | "Defines the update interval of the sensor in seconds. Defaults to 300 (5 minutes)."
-`origin_reverse_geocode_enabled` | `boolean` | `false` | "Whether to resolve the origin coordinates to a geolocation(address). Defaults to true."
-`destination_reverse_geocode_enabled` | `boolean` | `false` | "Whether to resolve the destination coordinates to a geolocation(address). Defaults to true."
+| Key                                   | Type      | Required | Description                                                                                                                                                                       |
+| ------------------------------------- | --------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `api_key`                             | `string`  | `true`   | Your application's API key (get one by following the instructions above).                                                                                                         |
+| `origin_latitude`                     | `string`  | `true`   | The starting latitude for calculating travel distance and time. Must be used in combination with origin_longitude. Cannot be used in combination with origin_entity_id            |
+| `origin_longitude`                    | `string`  | `true`   | The starting longitude for calculating travel distance and time. Must be used in combination with origin_latitude. Cannot be used in combination with origin_entity_id            |
+| `destination_latitude`                | `string`  | `true`   | The finishing latitude for calculating travel distance and time. Must be used in combination with destination_longitude. Cannot be used in combination with destination_entity_id |
+| `destination_longitude`               | `string`  | `true`   | The finishing longitude for calculating travel distance and time. Must be used in combination with destination_latitude. Cannot be used in combination with destination_entity_id |
+| `origin_entity_id`                    | `string`  | `true`   | The entity_id holding the starting point for calculating travel distance and time. Cannot be used in combination with origin_latitude / origin_longitude                          |
+| `destination_entity_id`               | `string`  | `true`   | The entity_id holding the finishing point for calculating travel distance and time. Cannot be used in combination with destination_latitude / destination_longitude               |
+| `name`                                | `string`  | `false`  | A name to display on the sensor. The default is "HERE Travel Time".                                                                                                               |
+| `mode`                                | `string`  | `false`  | You can choose between: `cycling-regular`, `driving-car` or `foot-walking`. The default is `driving-car`.                                                                         |
+| `route_mode`                          | `string`  | `false`  | You can choose between: `fastest`, or `shortest`. The default is `fastest`                                                                                                        |
+| `unit_system`                         | `string`  | `false`  | You can choose between `metric` or `imperial`. Defaults to `metric` or `imperial` based on the Home Assistant configuration.                                                      |
+| `scan_interval`                       | `integer` | `false`  | "Defines the update interval of the sensor in seconds. Defaults to 300 (5 minutes)."                                                                                              |
+| `origin_reverse_geocode_enabled`      | `boolean` | `false`  | "Whether to resolve the origin coordinates to a geolocation(address). Defaults to true."                                                                                          |
+| `destination_reverse_geocode_enabled` | `boolean` | `false`  | "Whether to resolve the destination coordinates to a geolocation(address). Defaults to true."                                                                                     |
 
 ## Dynamic Configuration
 
@@ -117,26 +130,26 @@ You can also use the `homeassistant.update_entity` service to update the sensor 
 
 ```yaml
 automation:
-- id: update_morning_commute_sensor
-  alias: "Commute - Update morning commute sensor"
-  initial_state: 'on'
-  trigger:
-    - platform: time_pattern
-      minutes: '/2'
-  condition:
-    - condition: time
-      after: '08:00:00'
-      before: '11:00:00'
-    - condition: time
-      weekday:
-        - mon
-        - tue
-        - wed
-        - thu
-        - fri
-  action:
-    - service: homeassistant.update_entity
-      entity_id: sensor.morning_commute
+  - id: update_morning_commute_sensor
+    alias: "Commute - Update morning commute sensor"
+    initial_state: "on"
+    trigger:
+      - platform: time_pattern
+        minutes: "/2"
+    condition:
+      - condition: time
+        after: "08:00:00"
+        before: "11:00:00"
+      - condition: time
+        weekday:
+          - mon
+          - tue
+          - wed
+          - thu
+          - fri
+    action:
+      - service: homeassistant.update_entity
+        entity_id: sensor.morning_commute
 ```
 
 <a href="https://www.buymeacoffee.com/eifinger" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/black_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a><br>
@@ -148,7 +161,7 @@ automation:
 [hacs]: https://github.com/hacs/integration
 [hacsbadge]: https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge
 [hacs-installs-shield]: https://img.shields.io/badge/dynamic/json?color=41BDF5&logo=home-assistant&label=installs&style=for-the-badge&cacheSeconds=15600&url=https://analytics.home-assistant.io/custom_integrations.json&query=$.open_route_services.total
-[exampleimg]: https://github.com/eifinger/open_route_service/blob/master/example.png?raw=true
+[exampleimg]: https://github.com/eifinger/open_route_service/blob/main/example.png?raw=true
 [forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
 [forum]: https://community.home-assistant.io/t/custom-component-open-route-service-travel-time/131941
 [license-shield]: https://img.shields.io/github/license/eifinger/open_route_service.svg?style=for-the-badge
